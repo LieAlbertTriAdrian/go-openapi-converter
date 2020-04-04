@@ -1,3 +1,9 @@
 vendor
 go-openapi-converter
 credentials.json
+
+# Sample result files
+*.sample.docx
+
+# Bin folder
+Bin

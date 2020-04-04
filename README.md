@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/weisurya/go-openapi-converter.svg?branch=master)](https://travis-ci.org/weisurya/go-openapi-converter)
 [![Go Report Card](https://goreportcard.com/badge/github.com/weisurya/go-openapi-converter)](https://goreportcard.com/report/github.com/weisurya/go-openapi-converter)
 
 ## Introduction
