@@ -19,4 +19,4 @@ build:
 
 .PHONY: run
 run:
-	file=$(date +'%Y-%m-%dT%H:%M:%S').txt; ./go-openapi-converter rest > "$file"
+	file=$(date +'%Y-%m-%dT%H:%M:%S').txt; ./go-openapi-converter rest &> "$file" &
