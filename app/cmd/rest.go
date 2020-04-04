@@ -85,6 +85,6 @@ func startRestServer(cmd *cobra.Command, args []string) {
 	// 	fmt.Fprintf(w, "Welcome to my website!")
 	// })
 
-	http.ListenAndServe(":3000", nil)
-	logrus.Info("Started http server at port 3000")
+	http.ListenAndServe(":80", nil)
+	logrus.Info("Started http server at port 80")
 }
