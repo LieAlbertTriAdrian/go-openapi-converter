@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -22,7 +21,9 @@ var restCmd = &cobra.Command{
 }
 
 func startRestServer(cmd *cobra.Command, args []string) {
-	logrus.Info("Starting http server at port 3000")
+	port := "80"
+
+	logrus.Info("Starting http server at port " + port)
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
@@ -31,7 +32,12 @@ func startRestServer(cmd *cobra.Command, args []string) {
 		logrus.Info("Request is coming to openapi-conversion")
 
 		currentTime := time.Now().Format("01-02-2006")
-		fileName := currentTime + "-" + guuid.New().String() + ".docx"
+		name := currentTime + "-" + guuid.New().String()
+
+		logrus.Info(name)
+
+		inputName := "input-" + name + ".json"
+		fileName := "output-" + name + ".docx"
 
 		switch r.Method {
 		case "POST":
@@ -42,12 +48,17 @@ func startRestServer(cmd *cobra.Command, args []string) {
 			}
 
 			openAPISpecInString := r.FormValue("openapi-spec")
-			logrus.Info(openAPISpecInString)
+
+			err := ioutil.WriteFile(inputName, []byte(openAPISpecInString), 0644)
+			if err != nil {
+				fmt.Fprintf(w, "Error writing input file %v", err)
+				return
+			}
 
 			doc, err := docmodule.ReadDocTemplate("template/standard.docx")
 			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
+				fmt.Fprintf(w, "Error reading open api string %v", err)
+				return
 			}
 
 			swagger, err := docmodule.ReadOpenAPIFromString(openAPISpecInString)
@@ -85,6 +96,6 @@ func startRestServer(cmd *cobra.Command, args []string) {
 	// 	fmt.Fprintf(w, "Welcome to my website!")
 	// })
 
-	http.ListenAndServe(":80", nil)
-	logrus.Info("Started http server at port 80")
+	http.ListenAndServe(":"+port, nil)
+	logrus.Info("Started http server at port " + port)
 }

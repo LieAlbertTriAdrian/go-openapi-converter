@@ -2,6 +2,9 @@ vendor
 go-openapi-converter
 credentials.json
 
+# Inputs folder
+Inputs
+
 # Sample result files
 *.docx
 
