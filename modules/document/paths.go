@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/LieAlbertTriAdrian/go-openapi-converter/utils"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/unidoc/unioffice/color"
 	"github.com/unidoc/unioffice/document"
 	"github.com/unidoc/unioffice/measurement"
 	"github.com/unidoc/unioffice/schema/soo/wml"
-	"github.com/weisurya/go-openapi-converter/utils"
 )
 
 func (s docHandler) BuildPaths() {
