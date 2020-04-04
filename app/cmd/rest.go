@@ -1,8 +1,12 @@
 package cmd
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"os"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -33,14 +37,40 @@ func startRestServer(cmd *cobra.Command, args []string) {
 			}
 
 			openAPISpecInString := r.FormValue("openapi-spec")
+			logrus.Info(openAPISpecInString)
 
-			doc, err := docmodule.ReadOpenAPIFromString(openAPISpecInString)
+			doc, err := docmodule.ReadDocTemplate("template/standard.docx")
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+
+			swagger, err := docmodule.ReadOpenAPIFromString(openAPISpecInString)
 			if err != nil {
 				fmt.Fprintf(w, "Error reading open api string %v", err)
 				return
 			}
 
-			fmt.Println(doc)
+			docService := docmodule.NewDocumentHandler(doc, swagger)
+
+			docService.BuildFrontpage()
+			docService.BuildTOC()
+			docService.BuildPaths()
+
+			name := "wtf.docx"
+
+			doc.SaveToFile(name)
+
+			fileData, err := ioutil.ReadFile(name)
+			if err != nil {
+				fmt.Fprintf(w, "Error reading output data %v", err)
+				return
+			}
+
+			// tell the browser the returned content should be downloaded
+			w.Header().Add("Content-Disposition", "Attachment")
+
+			http.ServeContent(w, r, name, time.Now(), bytes.NewReader(fileData))
 		default:
 			fmt.Fprintf(w, "Sorry, only POST methods is supported.")
 		}
