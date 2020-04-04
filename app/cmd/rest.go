@@ -12,6 +12,7 @@ import (
 	"github.com/spf13/cobra"
 
 	docmodule "github.com/LieAlbertTriAdrian/go-openapi-converter/modules/document"
+	guuid "github.com/google/uuid"
 )
 
 var restCmd = &cobra.Command{
@@ -28,6 +29,10 @@ func startRestServer(cmd *cobra.Command, args []string) {
 
 	http.HandleFunc("/openapi-conversions", func(w http.ResponseWriter, r *http.Request) {
 		logrus.Info("Request is coming to openapi-conversion")
+
+		currentTime := time.Now().Format("01-02-2006")
+		fileName := currentTime + "-" + guuid.New().String() + ".docx"
+
 		switch r.Method {
 		case "POST":
 			// Call ParseForm() to parse the raw query and update r.PostForm and r.Form.
@@ -57,11 +62,9 @@ func startRestServer(cmd *cobra.Command, args []string) {
 			docService.BuildTOC()
 			docService.BuildPaths()
 
-			name := "wtf.docx"
+			doc.SaveToFile(fileName)
 
-			doc.SaveToFile(name)
-
-			fileData, err := ioutil.ReadFile(name)
+			fileData, err := ioutil.ReadFile(fileName)
 			if err != nil {
 				fmt.Fprintf(w, "Error reading output data %v", err)
 				return
@@ -70,7 +73,7 @@ func startRestServer(cmd *cobra.Command, args []string) {
 			// tell the browser the returned content should be downloaded
 			w.Header().Add("Content-Disposition", "Attachment")
 
-			http.ServeContent(w, r, name, time.Now(), bytes.NewReader(fileData))
+			http.ServeContent(w, r, fileName, time.Now(), bytes.NewReader(fileData))
 		default:
 			fmt.Fprintf(w, "Sorry, only POST methods is supported.")
 		}
