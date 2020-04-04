@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/weisurya/go-openapi-converter/app/cmd"
+	"github.com/LieAlbertTriAdrian/go-openapi-converter/app/cmd"
 )
 
 func main() {

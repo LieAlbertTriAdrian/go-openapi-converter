@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	
-	docmodule "github.com/weisurya/go-openapi-converter/modules/document"
+	docmodule "github.com/LieAlbertTriAdrian/go-openapi-converter/modules/document"
 
 )
 

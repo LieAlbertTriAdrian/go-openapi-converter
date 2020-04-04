@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	gdrivemodule "github.com/weisurya/go-openapi-converter/modules/gdrive"
+	gdrivemodule "github.com/LieAlbertTriAdrian/go-openapi-converter/modules/gdrive"
 )
 
 var (

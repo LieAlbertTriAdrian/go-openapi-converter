@@ -24,3 +24,13 @@ func ReadOpenAPI(path string) (*openapi3.Swagger, error) {
 
 	return spec, nil
 }
+
+// ReadOpenAPIFromString to read OpenAPI spec string
+func ReadOpenAPIFromString(data string) (*openapi3.Swagger, error) {
+	spec, err := openapi3.NewSwaggerLoader().LoadSwaggerFromData([]byte(data))
+	if err != nil {
+		return nil, err
+	}
+
+	return spec, nil
+}

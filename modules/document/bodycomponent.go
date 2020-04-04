@@ -10,7 +10,7 @@ import (
 	"github.com/unidoc/unioffice/document"
 	"github.com/unidoc/unioffice/measurement"
 	"github.com/unidoc/unioffice/schema/soo/wml"
-	"github.com/weisurya/go-openapi-converter/utils"
+	"github.com/LieAlbertTriAdrian/go-openapi-converter/utils"
 )
 
 func createBodyComponent(component *openapi3.Schema, doc *document.Document) {
