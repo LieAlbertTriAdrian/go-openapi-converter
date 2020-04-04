@@ -16,3 +16,7 @@ lint:
 .PHONY: build
 build:
 	go build -i -o go-openapi-converter app/main.go
+
+.PHONY: run
+run:
+	file=$(date +'%Y-%m-%dT%H:%M:%S').txt; ./go-openapi-converter rest > "$file"
